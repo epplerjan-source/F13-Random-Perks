@@ -72,28 +72,23 @@ button:disabled{
     <div class="slot"><img id="bild3"></div>
 </div>
 
-<button id="spin" onclick="drehen()">🎲 Drehen</button>
-
 <h1>👤 Random Counselor 👤</h1>
 
 <div id="slot2">
     <div class="slot"><img id="bild4"></div>
 </div>
 
-<button id="spin2" onclick="drehen2()">🎲 Drehen</button>
+<button id="spin" onclick="drehenAlles()">Spin</button>
 
 <script>
 
-// ---------------- SLOT 1 ----------------
+// ---------------- PERKS ----------------
 
 function zufall(){
     return Math.floor(Math.random()*30)+1;
 }
 
 async function drehen(){
-
-    const button=document.getElementById("spin");
-    button.disabled=true;
 
     const bilder=[
         document.getElementById("bild1"),
@@ -120,26 +115,21 @@ async function drehen(){
     }
 
     bilder[0].src="bilder/"+zahlen[0]+".png";
-
     await new Promise(r=>setTimeout(r,250));
+
     bilder[1].src="bilder/"+zahlen[1]+".png";
-
     await new Promise(r=>setTimeout(r,250));
-    bilder[2].src="bilder/"+zahlen[2]+".png";
 
-    button.disabled=false;
+    bilder[2].src="bilder/"+zahlen[2]+".png";
 }
 
-// ---------------- SLOT 2 ----------------
+// ---------------- COUNSELOR ----------------
 
 function zufall2(){
     return Math.floor(Math.random()*18)+1;
 }
 
 async function drehen2(){
-
-    const button=document.getElementById("spin2");
-    button.disabled=true;
 
     const bild=document.getElementById("bild4");
 
@@ -148,16 +138,32 @@ async function drehen2(){
         await new Promise(r=>setTimeout(r,80));
     }
 
-    const z = zufall2();
+    const z=zufall2();
     bild.src="bilder2/"+z+".png";
+}
 
-    await new Promise(r=>setTimeout(r,300));
+// ---------------- SPIN ----------------
+
+async function spin(){
+
+    const button=document.getElementById("spin");
+    button.disabled=true;
+
+    await Promise.all([
+        drehen(),
+        drehen2()
+    ]);
 
     button.disabled=false;
 }
 
+// Alias für den Button
+async function drehenAlles(){
+    await spin();
+}
+
 // Start
-drehen();
+spin();
 
 </script>
 
